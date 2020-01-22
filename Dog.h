@@ -7,6 +7,11 @@ class Dog : public Animal
 public:
 	Dog(CString name, CString color, CString age);
 	virtual ~Dog();
+
+	virtual CString getColor();
+
+private:
+	//CString color;
 };
 
 

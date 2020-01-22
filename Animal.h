@@ -8,7 +8,7 @@ public:
 	virtual ~Animal();
 
 	virtual CString getName();
-	virtual CString getColor();
+	virtual CString getColor() = 0;
 	virtual CString getSound();
 	virtual CString getNumOfLegs();
 	virtual CString getAge();

@@ -17,4 +17,6 @@ Fish::~Fish()
 {
 }
 
+CString Fish::getColor() {return color;}
+
 

@@ -10,6 +10,7 @@ public:
 	Fish(CString name, CString color, CString age);
 	virtual ~Fish();
 
+	virtual CString getColor();
 };
 
 

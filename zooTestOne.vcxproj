@@ -184,17 +184,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animal.h" />
+    <ClInclude Include="Cat.h" />
     <ClInclude Include="Dog.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SiamiC.h" />
+    <ClInclude Include="StreetC.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="zooTestOne.h" />
     <ClInclude Include="zooTestOneDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
+    <ClCompile Include="Cat.cpp" />
     <ClCompile Include="Dog.cpp" />
     <ClCompile Include="Fish.cpp" />
     <ClCompile Include="pch.cpp">
@@ -203,6 +207,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SiamiC.cpp" />
+    <ClCompile Include="StreetC.cpp" />
     <ClCompile Include="zooTestOne.cpp" />
     <ClCompile Include="zooTestOneDlg.cpp" />
   </ItemGroup>

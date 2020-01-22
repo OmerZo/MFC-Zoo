@@ -10,6 +10,9 @@
 #include "Animal.h"
 #include "Fish.h"
 #include "Dog.h"
+#include "Cat.h"
+#include "SiamiC.h"
+#include "StreetC.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,6 +50,7 @@ BEGIN_MESSAGE_MAP(CzooTestOneDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BTN_DEL, &CzooTestOneDlg::OnBnClickedBtnDel)
 	ON_BN_CLICKED(IDC_BTN_ADD, &CzooTestOneDlg::OnBnClickedBtnAdd)
+	ON_BN_CLICKED(IDC_BUTTON1, &CzooTestOneDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -165,7 +169,6 @@ void CzooTestOneDlg::OnBnClickedBtnAdd()
 	if (name.GetLength() > 0)
 	{
 		Animal* animal = nullptr;
-
 		switch (m_type)
 		{
 		case 0:
@@ -177,9 +180,11 @@ void CzooTestOneDlg::OnBnClickedBtnAdd()
 			type = _T("Dog");
 			break;
 		case 2:
+			animal = new SiamiC(name, _T("White"), age);
 			type = _T("Siami Cat");
 			break;
 		case 3:
+			animal = new StreetC(name, _T("Black"), age);
 			type = _T("Street Cat");
 			break;
 		default:
@@ -197,4 +202,10 @@ void CzooTestOneDlg::OnBnClickedBtnAdd()
 	{
 		MessageBox(_T("Enter name!"), _T("Error"));
 	}
+}
+
+
+void CzooTestOneDlg::OnBnClickedButton1()
+{
+	// TODO: Add your control notification handler code here
 }

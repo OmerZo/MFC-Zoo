@@ -17,5 +17,6 @@ Dog::~Dog()
 {
 }
 
+CString Dog::getColor() { return color; }
 
 // Dog member functions

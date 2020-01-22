@@ -42,4 +42,5 @@ public:
 	afx_msg void OnBnClickedBtnAdd();
 	CEdit m_name;
 	int m_age;
+	afx_msg void OnBnClickedButton1();
 };
