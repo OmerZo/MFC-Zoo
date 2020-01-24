@@ -18,8 +18,7 @@
 #define new DEBUG_NEW
 #endif
 
-
-// CzooTestOneDlg dialog
+using namespace std;
 
 
 
@@ -43,6 +42,9 @@ void CzooTestOneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ED_NAME, m_name);
 	DDX_Text(pDX, IDC_ED_AGE, m_age);
 	DDV_MinMaxInt(pDX, m_age, 0, 9999);
+	DDX_Control(pDX, IDC_BTN_UNDO, m_undo);
+	DDX_Control(pDX, IDC_BTN_REDO, m_redo);
+	DDX_Control(pDX, IDC_BTN_SAVE, m_save);
 }
 
 BEGIN_MESSAGE_MAP(CzooTestOneDlg, CDialogEx)
@@ -50,7 +52,10 @@ BEGIN_MESSAGE_MAP(CzooTestOneDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BTN_DEL, &CzooTestOneDlg::OnBnClickedBtnDel)
 	ON_BN_CLICKED(IDC_BTN_ADD, &CzooTestOneDlg::OnBnClickedBtnAdd)
-	ON_BN_CLICKED(IDC_BUTTON1, &CzooTestOneDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BTN_UNDO, &CzooTestOneDlg::OnBnClickedBtnUndo)
+	ON_BN_CLICKED(IDC_BTN_REDO, &CzooTestOneDlg::OnBnClickedBtnRedo)
+	ON_BN_CLICKED(IDC_BTN_SAVE, &CzooTestOneDlg::OnBnClickedBtnSave)
+	ON_BN_CLICKED(IDC_BTN_OPEN, &CzooTestOneDlg::OnBnClickedBtnOpen)
 END_MESSAGE_MAP()
 
 
@@ -67,14 +72,10 @@ BOOL CzooTestOneDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 
-	initItems();
+	initList();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
-
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
 
 void CzooTestOneDlg::OnPaint()
 {
@@ -101,14 +102,13 @@ void CzooTestOneDlg::OnPaint()
 	}
 }
 
-// The system calls this function to obtain the cursor to display while the user drags
-//  the minimized window.
 HCURSOR CzooTestOneDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CzooTestOneDlg::initItems()
+
+void CzooTestOneDlg::initList()
 {
 	m_listCtrl.InsertColumn(0, L"Name", LVCFMT_CENTER, 80);
 	m_listCtrl.InsertColumn(1, L"Type", LVCFMT_LEFT, 100);
@@ -116,29 +116,6 @@ void CzooTestOneDlg::initItems()
 	m_listCtrl.InsertColumn(3, L"Number of legs", LVCFMT_LEFT, 150);
 	m_listCtrl.InsertColumn(4, L"Sound", LVCFMT_LEFT, 80);
 	m_listCtrl.InsertColumn(5, L"Color", LVCFMT_LEFT, 80);
-
-	//int nItem;
-
-	//nItem = m_listCtrl.InsertItem(0, L"Mark");
-	//m_listCtrl.SetItemText(nItem, 1, L"Siami Cat");
-	//m_listCtrl.SetItemText(nItem, 2, L"45");
-	//m_listCtrl.SetItemText(nItem, 3, L"4");
-	//m_listCtrl.SetItemText(nItem, 4, L"mio");
-	//m_listCtrl.SetItemText(nItem, 5, L"Black");
-
-	//nItem = m_listCtrl.InsertItem(0, L"Allan");
-	//m_listCtrl.SetItemText(nItem, 1, L"Dog");
-	//m_listCtrl.SetItemText(nItem, 2, L"28");
-	//m_listCtrl.SetItemText(nItem, 3, L"4");
-	//m_listCtrl.SetItemText(nItem, 4, L"wof");
-	//m_listCtrl.SetItemText(nItem, 5, L"Brown");
-
-	//nItem = m_listCtrl.InsertItem(0, L"Ajay");
-	//m_listCtrl.SetItemText(nItem, 1, L"Fish");
-	//m_listCtrl.SetItemText(nItem, 2, L"2");
-	//m_listCtrl.SetItemText(nItem, 3, L"0");
-	//m_listCtrl.SetItemText(nItem, 4, L"blo");
-	//m_listCtrl.SetItemText(nItem, 5, L"yellow");
 }
 
 void CzooTestOneDlg::OnBnClickedBtnDel()
@@ -148,7 +125,6 @@ void CzooTestOneDlg::OnBnClickedBtnDel()
 		if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
 		{
 			m_listCtrl.DeleteItem(nItem);
-			//CmySecondAppDlg::nId--;
 		}
 		else
 			++nItem;
@@ -161,42 +137,20 @@ void CzooTestOneDlg::OnBnClickedBtnAdd()
 
 	CString name = _T("");
 	CString age = _T("");
-	CString type = _T("");
-	int nItem;
 
 	m_name.GetWindowTextW(name);
 	age.Format(_T("%d"), m_age);
 	if (name.GetLength() > 0)
 	{
-		Animal* animal = nullptr;
-		switch (m_type)
-		{
-		case 0:
-			animal = new Fish(name, _T("Gold"), age);
-			type = _T("Fish");
-			break;
-		case 1:
-			animal = new Dog(name, _T("Brown"), age);
-			type = _T("Dog");
-			break;
-		case 2:
-			animal = new SiamiC(name, _T("White"), age);
-			type = _T("Siami Cat");
-			break;
-		case 3:
-			animal = new StreetC(name, _T("Black"), age);
-			type = _T("Street Cat");
-			break;
-		default:
-			break;
-		}
+		Animal* animal = createAnimal(name, age);
+		insertAnimal(animal);
 
-		nItem = m_listCtrl.InsertItem(0, animal->getName());
-		m_listCtrl.SetItemText(nItem, 1, type);
-		m_listCtrl.SetItemText(nItem, 2, animal->getAge());
-		m_listCtrl.SetItemText(nItem, 3, animal->getNumOfLegs());
-		m_listCtrl.SetItemText(nItem, 4, animal->getSound());
-		m_listCtrl.SetItemText(nItem, 5, animal->getColor());
+		done.push_back(animal);
+		m_undo.EnableWindow(true);
+		m_save.EnableWindow(true);
+		undone.clear();
+		m_redo.EnableWindow(false);
+
 	}
 	else
 	{
@@ -204,8 +158,144 @@ void CzooTestOneDlg::OnBnClickedBtnAdd()
 	}
 }
 
-
-void CzooTestOneDlg::OnBnClickedButton1()
+void CzooTestOneDlg::OnBnClickedBtnUndo()
 {
-	// TODO: Add your control notification handler code here
+	if (m_listCtrl.GetItemCount() > 0)
+	{
+		undone.push_back(done.back());
+		done.pop_back();
+		m_listCtrl.DeleteItem(0);
+		m_redo.EnableWindow(true);
+	}
+
+	if (m_listCtrl.GetItemCount() == 0)
+	{
+		m_undo.EnableWindow(false);
+		m_save.EnableWindow(false);
+	}
+}
+
+void CzooTestOneDlg::OnBnClickedBtnRedo()
+{
+	if (!undone.empty())
+	{
+		Animal *animal = undone.back();
+		insertAnimal(animal);
+		done.push_back(animal);
+		undone.pop_back();
+		m_undo.EnableWindow(true);
+		m_save.EnableWindow(true);
+	}
+
+	if (undone.empty())
+		m_redo.EnableWindow(false);
+}
+
+void CzooTestOneDlg::OnBnClickedBtnSave()
+{
+	char strFilter[] = { "Data Files (*.dat)" };
+	CFileDialog saveDlg(false, _T("dat"), NULL, 0, CString(strFilter));
+	if (saveDlg.DoModal() == IDOK)
+	{
+		CString s = saveDlg.GetPathName();
+		CFile file(s, CFile::modeCreate | CFile::modeWrite);
+		CArchive archive(&file, CArchive::store);
+
+		int size = done.size();
+		archive << size;
+
+		for (vector<Animal*>::iterator it = done.begin(); it != done.end(); it++)
+			(*it)->Serialize(archive);
+
+		archive.Close();
+		file.Close();
+	}
+}
+
+void CzooTestOneDlg::OnBnClickedBtnOpen()
+{
+	CFileDialog openDlg(true, _T(".dat"));
+	if (openDlg.DoModal() == IDOK)
+	{
+		CString s = openDlg.GetPathName();
+		CFile file(s, CFile::modeRead);
+		CArchive archive(&file, CArchive::load);
+		done.clear();
+		undone.clear();
+		recreate(archive);
+		archive.Close();
+		file.Close();
+	}
+}
+
+void CzooTestOneDlg::recreate(CArchive& archive)
+{
+	int size;
+	CString type;
+	CString color;
+	CString age;
+	CString name;
+	Animal* animal = nullptr;
+
+	m_listCtrl.DeleteAllItems();
+	archive >> size;
+
+	for (int i = 0; i < size; i++)
+	{
+		archive >> type;
+		archive >> color;
+		archive >> age;
+		archive >> name;
+
+		if (type.CompareNoCase(_T("Fish")))
+			animal = new Fish(name, _T("Gold"), age);
+		else if (type.CompareNoCase(_T("Dog")))
+			animal = new Dog(name, _T("Brown"), age);
+		else if (type.CompareNoCase(_T("Siami Cat")))
+			animal = new SiamiC(name, _T("White"), age);
+		else
+			animal = new StreetC(name, _T("Black"), age);
+
+		insertAnimal(animal);
+
+		done.push_back(animal);
+		m_undo.EnableWindow(true);
+		m_save.EnableWindow(true);
+		undone.clear();
+		m_redo.EnableWindow(false);
+	}
+}
+
+Animal* CzooTestOneDlg::createAnimal(CString name, CString age)
+{
+	Animal* animal = nullptr;
+	switch (m_type)
+	{
+	case 0:
+		animal = new Fish(name, _T("Gold"), age);
+		break;
+	case 1:
+		animal = new Dog(name, _T("Brown"), age);
+		break;
+	case 2:
+		animal = new SiamiC(name, _T("White"), age);
+		break;
+	case 3:
+		animal = new StreetC(name, _T("Black"), age);
+		break;
+	default:
+		break;
+	}
+	return animal;
+}
+
+void CzooTestOneDlg::insertAnimal(Animal* animal)
+{
+	int nItem;
+	nItem = m_listCtrl.InsertItem(0, animal->getName());
+	m_listCtrl.SetItemText(nItem, 1, animal->getType());
+	m_listCtrl.SetItemText(nItem, 2, animal->getAge());
+	m_listCtrl.SetItemText(nItem, 3, animal->getNumOfLegs());
+	m_listCtrl.SetItemText(nItem, 4, animal->getSound());
+	m_listCtrl.SetItemText(nItem, 5, animal->getColor());
 }

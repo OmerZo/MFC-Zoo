@@ -8,8 +8,8 @@
 
 // Cat
 
-Cat::Cat(CString name, CString color, CString age)
-	:Animal(name, color, _T("miow-miow"), _T("4"), age)
+Cat::Cat(CString name, CString color, CString age, CString type)
+	:Animal(name, color, _T("miow-miow"), _T("4"), age, type)
 {
 }
 

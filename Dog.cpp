@@ -9,7 +9,7 @@
 // Dog
 
 Dog::Dog(CString name, CString color, CString age)
-	:Animal(name, color, _T("woof-woof"), _T("4"), age)
+	:Animal(name, color, _T("woof-woof"), _T("4"), age, _T("Dog"))
 {
 }
 

@@ -9,7 +9,7 @@
 // StreetC
 
 StreetC::StreetC(CString name, CString color, CString age)
-	:Animal(name, color, _T("miow-miow"), _T("4"), age)
+	:Animal(name, color, _T("miow-miow"), _T("4"), age, _T("Street Cat"))
 {
 }
 

@@ -6,7 +6,7 @@
 class Cat : public Animal
 {
 public:
-	Cat(CString name, CString color, CString age);
+	Cat(CString name, CString color, CString age, CString type);
 	virtual ~Cat();
 
 	virtual CString getColor() = 0;

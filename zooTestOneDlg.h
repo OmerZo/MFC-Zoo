@@ -3,6 +3,9 @@
 //
 
 #pragma once
+#include <vector>
+#include "Animal.h"
+using namespace std;
 
 
 // CzooTestOneDlg dialog
@@ -30,6 +33,13 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+
+private:
+	vector<Animal*> done;
+	vector<Animal*> undone;
+
+
 public:
 	CButton m_fish;
 	CButton m_dog;
@@ -37,10 +47,19 @@ public:
 	CButton m_street;
 	CListCtrl m_listCtrl;
 	int m_type;
-	void initItems();
+	int m_age;
+	void initList();
+	void recreate(CArchive & archive);
+	Animal* createAnimal(CString name, CString age);
+	void insertAnimal(Animal* animal);
 	afx_msg void OnBnClickedBtnDel();
 	afx_msg void OnBnClickedBtnAdd();
 	CEdit m_name;
-	int m_age;
-	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedBtnUndo();
+	CButton m_undo;
+	afx_msg void OnBnClickedBtnRedo();
+	CButton m_redo;
+	afx_msg void OnBnClickedBtnSave();
+	afx_msg void OnBnClickedBtnOpen();
+	CButton m_save;
 };
